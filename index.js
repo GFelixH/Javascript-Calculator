@@ -5,6 +5,8 @@ let temp = 0;
 let temp2 = 0;
 let temPonto = false;
 let ehNegativo = false;
+let temErro = false;
+const ERRO_MSG = "Erro";
 
 botoes.forEach((elementoBotao) => {
   elementoBotao.addEventListener("click", (evento) => {
@@ -23,17 +25,17 @@ function apertouBotao(simbolo) {
     case "8":
     case "9":
     case "0":
-      poeNumero(simbolo);
+      if (!temErro) poeNumero(simbolo);
       break;
     case "/":
     case "x":
     case "+":
     case "-":
     case "=":
-      processaAcao(simbolo);
+      if (!temErro) processaAcao(simbolo);
       break;
     case ".":
-      if (!temPonto) {
+      if (!temPonto && !temErro) {
         poeNumero(simbolo);
         temPonto = true;
       } else {
@@ -54,16 +56,21 @@ function limpaDisplay() {
 }
 function processaAcao(acaoPassada) {
   if (acaoPassada != "=") {
+    //acaoPassada: + || - || * || /
     if (acaoArmazenada == "") {
+      //Primeira Entrada
       if (display.innerHTML == "" && acaoPassada == "-") {
+        //Numero Negativo
         display.innerHTML = "-";
       } else {
+        //Numero Positivo
         temp = pegaDisplay();
         acaoArmazenada = acaoPassada;
         temPonto = false;
         limpaDisplay();
       }
     } else {
+      //Nao e primeira entrada
       temp2 = pegaDisplay();
       temp = calculadora(temp, temp2, acaoArmazenada);
       limpaDisplay();
@@ -72,6 +79,7 @@ function processaAcao(acaoPassada) {
       acaoArmazenada = acaoPassada;
     }
   } else {
+    //acaoPassada: =
     temp2 = pegaDisplay();
     if (!temp) {
       ocorreuErro();
@@ -95,20 +103,25 @@ function calculadora(x, y, acao) {
   }
 }
 function mostraValor(valor) {
-  console.log(valor);
-  display.innerHTML = valor.toPrecision(3);
+  if (isNaN(valor)) {
+    ocorreuErro();
+  } else {
+    display.innerHTML = valor.toPrecision(3);
+  }
 }
 function limpaTemps() {
   temp = 0;
   temp2 = 0;
   acaoArmazenada = "";
   temPonto = false;
+  temErro = false;
 }
 function ocorreuErro() {
-  mostraValor("Erro");
-  setInterval(limpaDisplay, 2000);
-  limpaTemps();
+  display.innerHTML = ERRO_MSG;
+  temErro = true;
 }
 function pegaDisplay() {
-  return parseFloat(display.innerHTML);
+  if (isNaN(parseFloat(display.innerHTML))) {
+    ocorreuErro();
+  } else return parseFloat(display.innerHTML);
 }
