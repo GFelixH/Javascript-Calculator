@@ -6,7 +6,7 @@ let temp2 = 0;
 let temPonto = false;
 let ehNegativo = false;
 let temErro = false;
-const ERRO_MSG = "Erro";
+const ERRO_MSG = "Error";
 
 botoes.forEach((elementoBotao) => {
   elementoBotao.addEventListener("click", (evento) => {
