@@ -1,3 +1,6 @@
+* {
+  font-family: monospace;
+}
 .calculator-container {
   margin: 10% 33%;
   width: 320px;
@@ -5,6 +8,7 @@
   background: #adc2a7;
   box-shadow: 3px 3px lightgrey;
   border: 1px solid grey;
+  font-size: 1.5rem;
 }
 .display {
   border: 2px solid grey;
