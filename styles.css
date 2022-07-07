@@ -1,0 +1,12 @@
+.calculator {
+  display: grid;
+  grid-template-columns: repeat(4, 100px);
+  grid-template-rows: repeat(5, 40px);
+}
+.bttn {
+  padding: 20px;
+}
+#btteql {
+  grid-row: 2/6;
+  grid-column: 4;
+}
