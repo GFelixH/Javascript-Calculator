@@ -1,6 +1,9 @@
 * {
   font-family: monospace;
 }
+h1 {
+  margin-left: 35%;
+}
 .calculator-container {
   margin: 10% 33%;
   width: 320px;
