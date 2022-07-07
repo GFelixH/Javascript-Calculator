@@ -4,6 +4,7 @@ let acaoArmazenada = "";
 let temp = 0;
 let temp2 = 0;
 let temPonto = false;
+let ehNegativo = false;
 
 botoes.forEach((elementoBotao) => {
   elementoBotao.addEventListener("click", (evento) => {
@@ -53,17 +54,17 @@ function limpaDisplay() {
 }
 function processaAcao(acaoPassada) {
   if (acaoPassada != "=") {
-    console.log("acaoPassada nao eh igual");
-    //aqui a  acaoPassada eh / * - +
     if (acaoArmazenada == "") {
-      console.log("Primeira Chamada");
-      temp = parseFloat(display.innerHTML);
-      acaoArmazenada = acaoPassada;
-      temPonto = false;
-      limpaDisplay();
+      if (display.innerHTML == "" && acaoPassada == "-") {
+        display.innerHTML = "-";
+      } else {
+        temp = pegaDisplay();
+        acaoArmazenada = acaoPassada;
+        temPonto = false;
+        limpaDisplay();
+      }
     } else {
-      console.log("nao eh a primeira vez");
-      temp2 = parseFloat(display.innerHTML);
+      temp2 = pegaDisplay();
       temp = calculadora(temp, temp2, acaoArmazenada);
       limpaDisplay();
       mostraValor(temp);
@@ -71,12 +72,10 @@ function processaAcao(acaoPassada) {
       acaoArmazenada = acaoPassada;
     }
   } else {
-    console.log("eh =");
-    temp2 = parseFloat(display.innerHTML);
+    temp2 = pegaDisplay();
     if (!temp) {
       ocorreuErro();
     } else {
-      console.log("temp");
       temp = calculadora(temp, temp2, acaoArmazenada);
       mostraValor(temp);
     }
@@ -93,9 +92,6 @@ function calculadora(x, y, acao) {
       return x / y;
     case "x":
       return x * y;
-    default:
-      console.log("default da calculadora");
-      break;
   }
 }
 function mostraValor(valor) {
@@ -112,4 +108,7 @@ function ocorreuErro() {
   mostraValor("Erro");
   setInterval(limpaDisplay, 2000);
   limpaTemps();
+}
+function pegaDisplay() {
+  return parseFloat(display.innerHTML);
 }
