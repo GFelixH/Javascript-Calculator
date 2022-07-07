@@ -3,10 +3,10 @@ const display = document.querySelector(".display");
 let acaoArmazenada = "";
 let temp = 0;
 let temp2 = 0;
+let temPonto = false;
 
 botoes.forEach((elementoBotao) => {
   elementoBotao.addEventListener("click", (evento) => {
-    // console.log(evento.target.dataset.valor);
     apertouBotao(evento.target.dataset.valor);
   });
 });
@@ -32,19 +32,21 @@ function apertouBotao(simbolo) {
       processaAcao(simbolo);
       break;
     case ".":
-      console.log("ponto");
+      if (!temPonto) {
+        poeNumero(simbolo);
+        temPonto = true;
+      } else {
+        ocorreuErro();
+      }
       break;
     case "C":
-      console.log("clear");
       limpaDisplay();
       limpaTemps();
       break;
   }
 }
 function poeNumero(x) {
-  //   console.log(display.innerHTML);
   display.innerHTML = display.innerHTML + x;
-  //   console.log(display.innerHTML);
 }
 function limpaDisplay() {
   display.innerHTML = "";
@@ -55,30 +57,24 @@ function processaAcao(acaoPassada) {
     //aqui a  acaoPassada eh / * - +
     if (acaoArmazenada == "") {
       console.log("Primeira Chamada");
-      //se primeira armazena N A
       temp = parseFloat(display.innerHTML);
       acaoArmazenada = acaoPassada;
-      limpaDisplay(); //prox entrada de N
+      temPonto = false;
+      limpaDisplay();
     } else {
       console.log("nao eh a primeira vez");
-      //se nao primeira
-      //tem N e A armazenados e um novo N
-      temp2 = parseFloat(display.innerHTML); //pega novo N
-      temp = calculadora(temp, temp2, acaoArmazenada); //calcula N a Novo N
-      limpaDisplay(); //limpa novo N
-      mostraValor(temp); //mostra NAN
-      limpaDisplay(); //limpa NAN
-      //tenho NAN e A novo acaoPassada
+      temp2 = parseFloat(display.innerHTML);
+      temp = calculadora(temp, temp2, acaoArmazenada);
+      limpaDisplay();
+      mostraValor(temp);
+      limpaDisplay();
       acaoArmazenada = acaoPassada;
     }
   } else {
     console.log("eh =");
     temp2 = parseFloat(display.innerHTML);
     if (!temp) {
-      //ver dps
-      mostraValor("Erro");
-      setInterval(limpaDisplay, 2000);
-      limpaTemps();
+      ocorreuErro();
     } else {
       console.log("temp");
       temp = calculadora(temp, temp2, acaoArmazenada);
@@ -103,10 +99,17 @@ function calculadora(x, y, acao) {
   }
 }
 function mostraValor(valor) {
+  console.log(valor);
   display.innerHTML = valor.toPrecision(3);
 }
 function limpaTemps() {
   temp = 0;
   temp2 = 0;
   acaoArmazenada = "";
+  temPonto = false;
+}
+function ocorreuErro() {
+  mostraValor("Erro");
+  setInterval(limpaDisplay, 2000);
+  limpaTemps();
 }
