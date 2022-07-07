@@ -25,11 +25,7 @@ function apertouBotao(simbolo) {
       poeNumero(simbolo);
       break;
     case "/":
-      //   console.log("divisao");
-      break;
     case "x":
-      //   console.log("multiplicacao");
-      break;
     case "+":
     case "-":
     case "=":
@@ -79,6 +75,7 @@ function processaAcao(acaoPassada) {
     console.log("eh =");
     temp2 = parseFloat(display.innerHTML);
     if (!temp) {
+      //ver dps
       mostraValor("Erro");
       setInterval(limpaDisplay, 2000);
       limpaTemps();
@@ -96,13 +93,17 @@ function calculadora(x, y, acao) {
       return x + y;
     case "-":
       return x - y;
+    case "/":
+      return x / y;
+    case "x":
+      return x * y;
     default:
       console.log("default da calculadora");
       break;
   }
 }
 function mostraValor(valor) {
-  display.innerHTML = valor;
+  display.innerHTML = valor.toPrecision(3);
 }
 function limpaTemps() {
   temp = 0;
